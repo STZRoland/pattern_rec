@@ -22,15 +22,11 @@ impl PCA {
 
     pub fn fit(&self, data: &Array<f32, Ix2>) {
         let cov = data.cov(0.0).unwrap();
-        
         let (eigenvalues, eigenvectors) = cov.eig().unwrap();
 
         // Closure function: |eigenvectors| eigenvectors.re equivalent to def real_part(eigenvectors): return eigenvectors.re
         self.principal_components.set(eigenvectors.mapv(|vec| vec.re));
         self.lambda.set(eigenvalues.mapv(|vec| vec.re));
-        // self.principal_components = MathCell::new(eigenvectors.mapv(|vec| vec.re));
-        // self.lambda = MathCell::new(eigenvalues.mapv(|vec| vec.re));
-
     }
 
     pub fn transform(self, data: &Array<f32, Ix2>) -> Array<f32, Ix2> {
